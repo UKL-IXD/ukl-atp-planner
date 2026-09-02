@@ -4,13 +4,28 @@ No build tools, no npm, no branches to manage. The whole "dev cycle" is:
 
 1. You ask Claude for a change.
 2. Claude edits `index.html`, **tests it in an actual browser before sending it** (not just reading the code), and hands you the updated file.
-3. You replace the file in GitHub (steps below).
+3. You replace the file locally and push (steps below).
 4. GitHub Pages redeploys automatically — usually live within 30–60 seconds.
 5. Refresh the page (hard-refresh if you don't see the change — see below).
 
 That's the entire loop. There's no separate "build" step because this is a static HTML file — what Claude sends you is exactly what ships.
 
-## Replacing a file on GitHub (web UI)
+## Pushing an update — GitHub Desktop (recommended)
+
+One-time setup: install [GitHub Desktop](https://desktop.github.com), sign in, then
+**File → Clone Repository** and pick `ukl-atp-planner`. This gives you a real local
+folder wired directly to the GitHub repo — no terminal involved.
+
+From then on, every update is:
+1. Drag the new file(s) Claude sends into that local folder, overwriting the old ones
+2. Open GitHub Desktop — it auto-detects what changed and shows you a diff
+3. Type a commit message (convention below) in the box at bottom-left
+4. Click **Commit to main**
+5. Click **Push origin** (top right)
+
+## Pushing an update — GitHub web UI (fallback)
+
+No install needed, works from any browser, a bit more clicking:
 
 1. Open your repo on github.com
 2. Click into the file you're replacing (e.g. `index.html`)

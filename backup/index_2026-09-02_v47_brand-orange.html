@@ -233,11 +233,7 @@
     padding:10px 14px calc(10px + env(safe-area-inset-bottom)) 14px;
   }
   #mobileQuickBar[hidden]{display:none;}
-  .mqb-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;}
-  #mqbLabel{display:block;font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  #mqbClose{flex:0 0 auto;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:#fbfaf7;display:flex;align-items:center;justify-content:center;color:var(--ink-soft);cursor:pointer;}
-  #mqbClose svg{width:12px;height:12px;}
-  #mqbClose:active{background:#f0ede6;}
+  #mqbLabel{display:block;font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .mqb-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
   .mqb-actions button{
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
@@ -719,10 +715,7 @@
 </div>
 
 <div id="mobileQuickBar" hidden>
-  <div class="mqb-header">
-    <span id="mqbLabel" class="mono"></span>
-    <button type="button" id="mqbClose" title="Deselect"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
-  </div>
+  <span id="mqbLabel" class="mono"></span>
   <div class="mqb-actions">
     <button type="button" id="mqbRotate" title="Rotate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg><span>Rotate</span></button>
     <button type="button" id="mqbDup" title="Duplicate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="8" y="8" width="12" height="12" rx="1.5"/><path d="M4 16V5a1 1 0 0 1 1-1h11"/></svg><span>Copy</span></button>
@@ -857,15 +850,6 @@ const catalogGrid = document.getElementById('catalogGrid');
 const swatchesEl = document.getElementById('swatches');
 const chipsEl = document.getElementById('chips');
 const stageEl = document.getElementById('stage');
-stageEl.addEventListener('click', (e)=>{
-  // tapping/clicking empty floor-plan space (not a piece) deselects --
-  // there was previously no way to dismiss the editor/quick-action
-  // toolbar once something was selected. justDragged guards against a
-  // click landing right at the tail end of a real drag gesture.
-  if(justDragged) return;
-  if(e.target.closest('.piece')) return;
-  if(selectedId!=null){ selectedId = null; render(); }
-});
 const saveStatusEl = document.getElementById('saveStatus');
 const footerNoteEl = document.getElementById('footerNote');
 
@@ -1534,7 +1518,6 @@ document.getElementById('mqbEdit').addEventListener('click', ()=>{
   editorCard.scrollIntoView({behavior:'smooth', block:'center'});
   setTimeout(()=> document.getElementById('fName').focus(), 350);
 });
-document.getElementById('mqbClose').addEventListener('click', ()=>{ selectedId = null; render(); });
 function deleteItem(id){ items = items.filter(i=>i.id!==id); if(selectedId===id) selectedId = items.length? items[0].id : null; render(); scheduleSave(); }
 document.getElementById('searchBox').addEventListener('input', e=>{ searchQuery = e.target.value; renderCatalog(); });
 document.getElementById('sortSelect').addEventListener('change', e=>{ sortMode = e.target.value; renderCatalog(); });
@@ -1600,19 +1583,9 @@ function onDragMove(e){
   it.x = nx; it.y = ny;
   render();
 }
-let justDragged = false;
 function onDragEnd(){
   const wasClick = dragState && !dragState.moved;
   const clickedId = dragState ? dragState.id : null;
-  if(dragState && dragState.moved){
-    // a real drag doesn't reliably fire a native "click" event afterward at
-    // all, so this can't be a consume-on-next-click flag -- that left it
-    // sitting true and wrongly absorbed the NEXT unrelated tap instead.
-    // A short timeout covers the same-gesture case without blocking any
-    // later, genuinely separate tap.
-    justDragged = true;
-    setTimeout(()=>{ justDragged = false; }, 250);
-  }
   dragState = null;
   window.removeEventListener('pointermove', onDragMove);
   window.removeEventListener('pointerup', onDragEnd);

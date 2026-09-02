@@ -1,5 +1,7 @@
 # UKL — Apartment Planner
 
+A single-file, no-build-step floor plan and furniture catalog tool for a 750 sqft 1BR apartment in Sunnyvale, CA. Built for planning furniture layout, tracking a shopping catalog with real product links/pricing, and keeping a Pinterest-style reference board — all in one page, installable as a home-screen app on iPhone.
+
 **Live app:** _add your github.io link here once Pages is on_
 
 ## What it does

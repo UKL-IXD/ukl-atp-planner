@@ -3,6 +3,59 @@
 All notable changes to the UKL Apartment Planner tool, newest first.
 Corresponding dated backups live in `/backup`.
 
+## v48 — Deselecting was never actually possible
+- Once you selected a piece (including just by dragging it), there was
+  no way to dismiss the editor/quick-action toolbar — no tap-empty-space,
+  no close button, nothing. It stayed until you selected something else.
+  Added both: tapping empty floor-plan space now deselects, and the
+  mobile quick-action bar got an explicit × button. Caught a real bug
+  building the fix — a real drag doesn't reliably fire a native "click"
+  afterward, so a naive "skip the very next click" guard actually ate
+  the *following* unrelated tap instead of the drag's own; switched to
+  a short time-based guard instead.
+
+## v47 — Real brand orange from ukldesign.ca
+- Sampled the actual pixel color from a screenshot of the "Product
+  Designer." text on your site (RGB 236,108,44 — dominant by a wide
+  margin over anti-aliased edge pixels) rather than guessing. Swapped
+  into the core --rust CSS variable, the theme-color meta tag, the
+  color-swatch picker, and regenerated the app icon backgrounds to
+  match. Left furniture-piece colors alone (e.g. the DYVLINGE chair,
+  which is orange because that's the real product's color, not a
+  brand-color coincidence).
+
+## v46 — Gentler catalog/placed-item sync jumps
+- Clicking a piece on the floor plan (or a catalog card's "Placed" badge)
+  used to force a hard smooth-scroll to dead-center every time, even when
+  the target was already fully on screen, and combined with a filter
+  reset + full grid rebuild happening in the same instant. Now: skips
+  the scroll entirely if the target is already visible, and when a
+  scroll IS needed, moves the minimum distance instead of always
+  recentering. Also respects `prefers-reduced-motion` (instant jump
+  instead of animated scroll for anyone with that OS setting on), and
+  softened the flash-highlight intensity slightly.
+
+## v45 — Clean app icon
+- The old icon was rasterized from hand-drawn stroke lines in Python,
+  which never renders crisp at icon sizes. Replaced with a proper solid
+  filled house-silhouette glyph (roof + walls + door cutout), rendered
+  through an actual SVG renderer at high resolution and downsampled with
+  quality filtering for each size — apple-touch-icon, 192/512 for the
+  manifest, and new 16/32px favicons (didn't have any before). Also
+  swapped the topbar's inline logo mark to the same glyph so the browser
+  tab, home-screen icon, and in-app logo all match.
+
+## v44 — Mobile quick-action bar
+- The Rotate/Copy/Delete controls only lived in the sidebar "Edit Piece"
+  panel, which sits well below the floor plan and catalog on a narrow
+  screen — meant scrolling all the way down every time after selecting
+  a piece. Added a fixed bottom toolbar (mobile/tablet widths only —
+  desktop's sidebar is already immediately visible there) that shows
+  Rotate/Copy/Edit/Delete for whatever's currently selected, regardless
+  of scroll position. "Edit" jumps to and focuses the full editor for
+  renaming/resizing/color, which still needs more room than a toolbar
+  can give it.
+
 ## v43 — IndexedDB storage
 - Replaced localStorage with IndexedDB as the primary persistence layer.
   localStorage caps out around 5–10MB, which was the real blocker for saving

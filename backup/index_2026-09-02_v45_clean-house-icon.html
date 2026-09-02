@@ -12,13 +12,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="UKL Planner">
-<meta name="theme-color" content="#EC6C2C">
+<meta name="theme-color" content="#c1552b">
 <title>UKL Planner</title>
 <style>
   :root{
     color-scheme: light;
     --ink:#111111; --ink-soft:#6b6b6b; --line:#dcdcdc; --paper:#ffffff;
-    --grid:#eceae4; --rust:#EC6C2C; --rust-ink:#AA4E20; --tag-bg:#111111; --tag-text:#ffffff; --radius:2px;
+    --grid:#eceae4; --rust:#c1552b; --rust-ink:#8a3b1c; --tag-bg:#111111; --tag-text:#ffffff; --radius:2px;
   }
   *{box-sizing:border-box;}
   /* belt-and-suspenders: some in-app browsers/previewers apply their own
@@ -233,11 +233,7 @@
     padding:10px 14px calc(10px + env(safe-area-inset-bottom)) 14px;
   }
   #mobileQuickBar[hidden]{display:none;}
-  .mqb-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;}
-  #mqbLabel{display:block;font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  #mqbClose{flex:0 0 auto;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:#fbfaf7;display:flex;align-items:center;justify-content:center;color:var(--ink-soft);cursor:pointer;}
-  #mqbClose svg{width:12px;height:12px;}
-  #mqbClose:active{background:#f0ede6;}
+  #mqbLabel{display:block;font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .mqb-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
   .mqb-actions button{
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
@@ -271,14 +267,11 @@
   .catalog-link-row b{color:var(--ink);}
   .catalog-link-row .tag-pick{display:inline-block;}
   @keyframes flashPulse{
-    0%{box-shadow:0 0 0 0 rgba(193,85,43,.4);}
-    70%{box-shadow:0 0 0 7px rgba(193,85,43,0);}
+    0%{box-shadow:0 0 0 0 rgba(193,85,43,.55);}
+    70%{box-shadow:0 0 0 8px rgba(193,85,43,0);}
     100%{box-shadow:0 0 0 0 rgba(193,85,43,0);}
   }
   .flash{animation:flashPulse 1.4s ease-out 1;position:relative;z-index:1;}
-  @media (prefers-reduced-motion: reduce){
-    .flash{animation:none; box-shadow:0 0 0 2px rgba(193,85,43,.45);}
-  }
 
   .tabs-row{display:flex;gap:8px;padding:16px 0;border-bottom:1px solid var(--line);margin-bottom:24px;}
   .tab-btn{height:38px;padding:0 20px;border-radius:999px;border:1px solid var(--ink);background:#fff;color:var(--ink);font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;cursor:pointer;font-family:inherit;}
@@ -719,10 +712,7 @@
 </div>
 
 <div id="mobileQuickBar" hidden>
-  <div class="mqb-header">
-    <span id="mqbLabel" class="mono"></span>
-    <button type="button" id="mqbClose" title="Deselect"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
-  </div>
+  <span id="mqbLabel" class="mono"></span>
   <div class="mqb-actions">
     <button type="button" id="mqbRotate" title="Rotate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg><span>Rotate</span></button>
     <button type="button" id="mqbDup" title="Duplicate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="8" y="8" width="12" height="12" rx="1.5"/><path d="M4 16V5a1 1 0 0 1 1-1h11"/></svg><span>Copy</span></button>
@@ -751,7 +741,7 @@ function fmtSecondary(n){ return unitMode==='cm' ? fmtIn(n) : fmtCm(n); }
 function fmtDimsPrimary(w,h){ return fmtPrimary(w)+'&times;'+fmtPrimary(h); }
 function money(n){ return n==null ? '—' : '$'+n.toLocaleString(undefined,{maximumFractionDigits:0}); }
 
-const COLORS = ["#EC6C2C","#1d9e75","#3d7ea6","#e08a2e","#7a6a9e","#4a4a4a","#b04a80"];
+const COLORS = ["#c1552b","#1d9e75","#3d7ea6","#e08a2e","#7a6a9e","#4a4a4a","#b04a80"];
 const ICONS = {
   sofa: '<svg viewBox="0 0 48 48"><rect x="4" y="20" width="40" height="16" rx="4" fill="none" stroke="#111" stroke-width="2"/><rect x="4" y="14" width="10" height="14" rx="3" fill="none" stroke="#111" stroke-width="2"/><rect x="34" y="14" width="10" height="14" rx="3" fill="none" stroke="#111" stroke-width="2"/></svg>',
   table: '<svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="14" fill="none" stroke="#111" stroke-width="2"/><line x1="24" y1="34" x2="24" y2="42" stroke="#111" stroke-width="2"/></svg>',
@@ -857,15 +847,6 @@ const catalogGrid = document.getElementById('catalogGrid');
 const swatchesEl = document.getElementById('swatches');
 const chipsEl = document.getElementById('chips');
 const stageEl = document.getElementById('stage');
-stageEl.addEventListener('click', (e)=>{
-  // tapping/clicking empty floor-plan space (not a piece) deselects --
-  // there was previously no way to dismiss the editor/quick-action
-  // toolbar once something was selected. justDragged guards against a
-  // click landing right at the tail end of a real drag gesture.
-  if(justDragged) return;
-  if(e.target.closest('.piece')) return;
-  if(selectedId!=null){ selectedId = null; render(); }
-});
 const saveStatusEl = document.getElementById('saveStatus');
 const footerNoteEl = document.getElementById('footerNote');
 
@@ -1420,12 +1401,7 @@ function flashEl(el){
 }
 function focusPlacedItem(id){
   const row = itemList.querySelector('[data-itemid="'+id+'"]');
-  if(!row) return;
-  const rect = row.getBoundingClientRect();
-  const fullyVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!fullyVisible) row.scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', block:'nearest'});
-  flashEl(row);
+  if(row){ row.scrollIntoView({behavior:'smooth', block:'center'}); flashEl(row); }
 }
 function focusCatalogCard(catalogId){
   // make sure the card is actually visible: clear filters that could hide it
@@ -1435,22 +1411,8 @@ function focusCatalogCard(catalogId){
   if(activeCat!=='all' && !target.tags.includes(activeCat)){ activeCat='all'; changed = true; }
   if(searchQuery){ searchQuery=''; document.getElementById('searchBox').value=''; changed = true; }
   if(changed){ renderChips(); renderCatalog(); }
-  // if a filter change just rebuilt the grid, wait a frame so the layout we're
-  // about to measure against is the real, current one -- not a stale one
-  requestAnimationFrame(()=>{
-    const card = catalogGrid.querySelector('[data-catid="'+catalogId+'"]');
-    if(!card) return;
-    const rect = card.getBoundingClientRect();
-    const fullyVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(!fullyVisible){
-      // 'nearest' moves the minimum distance needed, instead of always
-      // yanking the card to dead-center -- much less disorienting when it's
-      // already close to being in view
-      card.scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', block:'nearest'});
-    }
-    flashEl(card);
-  });
+  const card = catalogGrid.querySelector('[data-catid="'+catalogId+'"]');
+  if(card){ card.scrollIntoView({behavior:'smooth', block:'center'}); flashEl(card); }
 }
 function renderEditor(){
   const it = items.find(i=>i.id===selectedId);
@@ -1534,7 +1496,6 @@ document.getElementById('mqbEdit').addEventListener('click', ()=>{
   editorCard.scrollIntoView({behavior:'smooth', block:'center'});
   setTimeout(()=> document.getElementById('fName').focus(), 350);
 });
-document.getElementById('mqbClose').addEventListener('click', ()=>{ selectedId = null; render(); });
 function deleteItem(id){ items = items.filter(i=>i.id!==id); if(selectedId===id) selectedId = items.length? items[0].id : null; render(); scheduleSave(); }
 document.getElementById('searchBox').addEventListener('input', e=>{ searchQuery = e.target.value; renderCatalog(); });
 document.getElementById('sortSelect').addEventListener('change', e=>{ sortMode = e.target.value; renderCatalog(); });
@@ -1600,19 +1561,9 @@ function onDragMove(e){
   it.x = nx; it.y = ny;
   render();
 }
-let justDragged = false;
 function onDragEnd(){
   const wasClick = dragState && !dragState.moved;
   const clickedId = dragState ? dragState.id : null;
-  if(dragState && dragState.moved){
-    // a real drag doesn't reliably fire a native "click" event afterward at
-    // all, so this can't be a consume-on-next-click flag -- that left it
-    // sitting true and wrongly absorbed the NEXT unrelated tap instead.
-    // A short timeout covers the same-gesture case without blocking any
-    // later, genuinely separate tap.
-    justDragged = true;
-    setTimeout(()=>{ justDragged = false; }, 250);
-  }
   dragState = null;
   window.removeEventListener('pointermove', onDragMove);
   window.removeEventListener('pointerup', onDragEnd);
