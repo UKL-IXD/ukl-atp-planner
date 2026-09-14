@@ -3,6 +3,20 @@
 All notable changes to the UKL Apartment Planner tool, newest first.
 Corresponding dated backups live in `/backup`.
 
+## v50 — Rug catalog + auto-layering
+- Expanded from one hardcoded rug to a real "Rugs" category: 8x10, 6x9,
+  5x8, and a 6' round, each tagged `rug` and filterable via a new "Rugs"
+  chip. Any rug-tagged item — preset or one you create yourself — now
+  automatically lands at the back of the layer order the moment you add
+  it, instead of requiring a manual "Send to Back" click every time.
+  Also fixed the default 8x10 rug's position: it was placed a bit
+  off-center from the sofa, leaving the sofa hanging half off the edge.
+  Caught a real bug while building the auto-layering: my first attempt
+  put the shared `addCatalogItemToPlan` helper inside a nested render
+  callback instead of top-level scope, so it silently only worked from
+  one of the two "add to plan" entry points. Moved it out and reverified
+  both.
+
 ## v49 — Area rug + Send to Back
 - Added an 8'x10' area rug to the catalog, sized and positioned for the
   actual 11'x18' living room (fits under the sofa + coffee table with a
