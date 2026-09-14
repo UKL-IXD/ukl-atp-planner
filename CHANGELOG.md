@@ -3,6 +3,16 @@
 All notable changes to the UKL Apartment Planner tool, newest first.
 Corresponding dated backups live in `/backup`.
 
+## v49 — Area rug + Send to Back
+- Added an 8'x10' area rug to the catalog, sized and positioned for the
+  actual 11'x18' living room (fits under the sofa + coffee table with a
+  clean floor margin, per the sizing recommendation). This surfaced a
+  real gap: the tool had no concept of layering, so a newly-added rug
+  would render ON TOP of existing furniture. Added "Send to Back"
+  (sidebar + mobile quick bar) — moves a piece to the back of the
+  render order. Placed the rug in the default layout too, correctly
+  behind the sofa/coffee table/media console.
+
 ## v48 — Deselecting was never actually possible
 - Once you selected a piece (including just by dragging it), there was
   no way to dismiss the editor/quick-action toolbar — no tap-empty-space,
